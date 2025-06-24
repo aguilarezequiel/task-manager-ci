@@ -1,0 +1,69 @@
+{
+  "name": "task-manager-ci",
+  "version": "1.0.0",
+  "description": "Sistema de gestión de tareas con CI/CD - TP4 Ingeniería de Software",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": [
+    "ci",
+    "cd",
+    "testing",
+    "node",
+    "express"
+  ],
+  "contributors": [
+    {
+      "name": "Ezequiel"
+    },
+    {
+      "name": "Matías"
+    },
+    {
+      "name": "Facu"
+    },
+    {
+      "name": "Cocha"
+    },
+    {
+      "name": "Nico"
+    },
+    {
+      "name": "Pachi"
+    }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "nodemon": "^3.0.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/app.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "author": ""
+}
