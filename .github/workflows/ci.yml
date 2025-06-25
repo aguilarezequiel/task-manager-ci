@@ -14,18 +14,14 @@ jobs:
     name: 🧪 Tests & Coverage
     runs-on: ubuntu-latest
     
-    strategy:
-      matrix:
-        node-version: [20.x]
-    
     steps:
     - name: 📥 Checkout código
       uses: actions/checkout@v4
     
-    - name: 🟢 Configurar Node.js ${{ matrix.node-version }}
+    - name: 🟢 Configurar Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: ${{ env.NODE_VERSION  }}
         cache: 'npm'
     
     - name: 📦 Instalar dependencias
@@ -54,7 +50,7 @@ jobs:
         flags: unittests
         name: task-manager-coverage
         fail_ci_if_error: false
-      if: matrix.node-version == '20.x'
+      if: env.NODE_VERSION  == '20.x'
     
     - name: 📋 Mostrar resumen de pruebas
       run: |
@@ -134,60 +130,3 @@ jobs:
         timeout 10s npm start || echo "Aplicación puede iniciarse correctamente"
     
 
-
-  notification:
-    name: 📢 Notificación
-    runs-on: ubuntu-latest
-    needs: [test, quality-gates, build]
-    
-    
-    steps:
-    - name: 📢 Notificar resultado del pipeline
-      if: always()
-      run: |
-        echo "📊 RESULTADO DEL PIPELINE CI/CD"
-        echo "================================"
-        
-        if [ "${{ needs.test.result }}" == "success" ]; then
-          echo "Tests: EXITOSO"
-        else
-          echo "Tests: FALLIDO"
-        fi
-        
-        if [ "${{ needs.quality-gates.result }}" == "success" ]; then
-          echo "Quality Gates: EXITOSO"
-        else
-          echo "Quality Gates: FALLIDO"
-        fi
-        
-        if [ "${{ needs.build.result }}" == "success" ]; then
-          echo "Build: EXITOSO"
-        else
-          echo "Build: FALLIDO"
-        fi
-        
-        
-        echo "================================"
-        
-        if [ "${{ needs.test.result }}" == "success" ] && [ "${{ needs.quality-gates.result }}" == "success" ] && [ "${{ needs.build.result }}" == "success" ]; then
-          echo "🎉 PIPELINE COMPLETADO EXITOSAMENTE"
-          echo "🚀 Código listo para deploy"
-          echo "📈 Todas las verificaciones pasaron"
-        else
-          echo "⚠️ PIPELINE FALLÓ"
-          echo "🔍 Revisar logs para más detalles"
-          echo "📝 Corregir errores antes de merge"
-          exit 1
-        fi
-    
-    - name: 📊 Resumen final
-      if: always()
-      run: |
-        echo "📊 RESUMEN FINAL - TP4 INTEGRACIÓN CONTINUA"
-        echo "==========================================="
-        echo "👥 Equipo: Ezequiel, Matías, Facu, Cocha, Nico, Pachi"
-        echo "📅 Fecha: $(date)"
-        echo "🔧 Node.js: ${{ env.NODE_VERSION }}"
-        echo "🧪 Pruebas ejecutadas: 28"
-        echo "📊 Cobertura objetivo: >80%"
-        echo "==========================================="
