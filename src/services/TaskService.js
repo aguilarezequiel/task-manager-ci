@@ -41,7 +41,7 @@ class TaskService {
     if (updates.description) task.description = updates.description;
     if (updates.priority) task.updatePriority(updates.priority);
     if (updates.status) task.updateStatus(updates.status);
-    if (updates.dueDate) task.dueDate = new Date(updates.dueDate);
+    if (updates.dueDate) task.updateDueDate(updates.dueDate);
     
     task.updatedAt = new Date();
     return task;

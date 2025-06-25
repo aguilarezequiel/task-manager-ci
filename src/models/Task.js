@@ -28,6 +28,10 @@ class Task {
     this.updatedAt = new Date();
   }
 
+  updateDueDate(newDueDate) {
+    this.dueDate = new Date(newDueDate);
+  }
+
   isOverdue() {
     if (!this.dueDate) return false;
     return new Date() > this.dueDate && this.status !== 'completed';

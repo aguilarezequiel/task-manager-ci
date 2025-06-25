@@ -2,7 +2,7 @@ const Task = require('../src/models/Task');
 
 describe('Task Model - Pruebas de Ezequiel', () => {
   test('Debe crear una tarea con propiedades válidas', () => {
-    const task = new Task('Completar TP', 'Terminar el trabajo práctico de CI', 'high');
+    const task = new Task('Completar TP', 'Terminar el trabajo práctico de CI', 'high', '2023-12-31');
     
     expect(task.title).toBe('Completar TP');
     expect(task.description).toBe('Terminar el trabajo práctico de CI');
@@ -31,5 +31,29 @@ describe('Task Model - Pruebas de Ezequiel', () => {
     expect(task.status).toBe('completed');
     
     expect(() => task.updateStatus('invalid-status')).toThrow('Invalid status');
+  });
+
+  test('Debe actualizar la prioridad de la tarea correctamente', () => {
+    const task = new Task('Task Title', 'Task Description', 'low');
+    
+    task.updatePriority('medium');
+    expect(task.priority).toBe('medium');
+    
+    task.updatePriority('high');
+    expect(task.priority).toBe('high');
+    
+    expect(() => task.updatePriority('invalid-priority')).toThrow('Invalid priority');
+  });
+
+  test('Debe comprobar el vencimiento de la tarea correctamente', () => {
+    const task = new Task('Task Title', 'Task Description', 'low');
+    
+    task.updateStatus('pending');
+    let isOverdue = task.isOverdue();
+    expect(isOverdue).toBe(false);
+    
+    task.updateDueDate('2023-01-01');
+    isOverdue = task.isOverdue();
+    expect(isOverdue).toBe(true);
   });
 });
