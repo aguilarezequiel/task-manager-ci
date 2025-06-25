@@ -103,7 +103,7 @@ jobs:
         npm ls --depth=0 | grep -E "^[├└]" | wc -l
 
   build:
-    name: 🏗️ Build & Validate
+    name: 🏗️ Build
     runs-on: ubuntu-latest
     needs: audit
     
