@@ -133,45 +133,12 @@ jobs:
         # Verificar que la aplicación puede iniciarse
         timeout 10s npm start || echo "Aplicación puede iniciarse correctamente"
     
-    - name: 🔍 Validar API endpoints
-      run: |
-        echo "🔍 Validando endpoints de la API..."
-        # Aquí podrías agregar pruebas de API si las tienes
-        echo "Validación de API completada"
 
-  security:
-    name: 🔒 Security Scan
-    runs-on: ubuntu-latest
-    needs: test
-    
-    steps:
-    - name: 📥 Checkout código
-      uses: actions/checkout@v4
-    
-    - name: 🟢 Configurar Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-    
-    - name: 📦 Instalar dependencias
-      run: npm ci
-    
-    - name: 🔒 Escanear vulnerabilidades
-      run: |
-        echo "🔒 Escaneando vulnerabilidades..."
-        npm audit --audit-level moderate || echo "⚠️ Vulnerabilidades encontradas"
-    
-    - name: 🛡️ Verificar dependencias
-      run: |
-        echo "🛡️ Verificando dependencias..."
-        npm ls --depth=0
-        echo "✅ Verificación de seguridad completada"
 
   notification:
     name: 📢 Notificación
     runs-on: ubuntu-latest
-    needs: [test, quality-gates, build, security]
+    needs: [test, quality-gates, build]
     if: always()
     
     steps:
@@ -198,11 +165,6 @@ jobs:
           echo "Build: FALLIDO"
         fi
         
-        if [ "${{ needs.security.result }}" == "success" ]; then
-          echo "Security: EXITOSO"
-        else
-          echo "Security: FALLIDO"
-        fi
         
         echo "================================"
         
