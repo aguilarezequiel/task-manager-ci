@@ -139,10 +139,11 @@ jobs:
     name: 📢 Notificación
     runs-on: ubuntu-latest
     needs: [test, quality-gates, build]
-    if: always()
+    
     
     steps:
     - name: 📢 Notificar resultado del pipeline
+      if: always()
       run: |
         echo "📊 RESULTADO DEL PIPELINE CI/CD"
         echo "================================"
