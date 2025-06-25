@@ -62,7 +62,7 @@ describe('Task Controller - Pruebas de Matías', () => {
     );
   });
 
-/*   test('Debe eliminar una tarea via controlador', () => {
+  test('Debe eliminar una tarea via controlador', () => {
     // Crear tarea
     req.body = {
       title: 'Tarea para eliminar',
@@ -87,5 +87,5 @@ describe('Task Controller - Pruebas de Matías', () => {
         message: 'Task deleted successfully'
       })
     );
-  }); */
+  });
 });
