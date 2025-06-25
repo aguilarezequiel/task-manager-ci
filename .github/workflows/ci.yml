@@ -93,11 +93,11 @@ jobs:
         
         # Verificar estructura del proyecto
         echo "📁 Verificando estructura del proyecto..."
-        test -d "src" || (echo "❌ Directorio src/ no encontrado" && exit 1)
-        test -d "tests" || (echo "❌ Directorio tests/ no encontrado" && exit 1)
-        test -f "package.json" || (echo "❌ package.json no encontrado" && exit 1)
+        test -d "src" || (echo "Directorio src/ no encontrado" && exit 1)
+        test -d "tests" || (echo "Directorio tests/ no encontrado" && exit 1)
+        test -f "package.json" || (echo "package.json no encontrado" && exit 1)
         
-        echo "✅ Quality gates pasados exitosamente"
+        echo "Quality gates pasados exitosamente"
     
     - name: 📊 Verificar métricas de código
       run: |
@@ -112,7 +112,7 @@ jobs:
   build:
     name: 🏗️ Build & Validate
     runs-on: ubuntu-latest
-    needs: [test, quality-gates]
+    needs: quality-gates
     
     steps:
     - name: 📥 Checkout código
@@ -131,13 +131,13 @@ jobs:
       run: |
         echo "🏗️ Construyendo aplicación..."
         # Verificar que la aplicación puede iniciarse
-        timeout 10s npm start || echo "✅ Aplicación puede iniciarse correctamente"
+        timeout 10s npm start || echo "Aplicación puede iniciarse correctamente"
     
     - name: 🔍 Validar API endpoints
       run: |
         echo "🔍 Validando endpoints de la API..."
         # Aquí podrías agregar pruebas de API si las tienes
-        echo "✅ Validación de API completada"
+        echo "Validación de API completada"
 
   security:
     name: 🔒 Security Scan
@@ -181,27 +181,27 @@ jobs:
         echo "================================"
         
         if [ "${{ needs.test.result }}" == "success" ]; then
-          echo "✅ Tests: EXITOSO"
+          echo "Tests: EXITOSO"
         else
-          echo "❌ Tests: FALLIDO"
+          echo "Tests: FALLIDO"
         fi
         
         if [ "${{ needs.quality-gates.result }}" == "success" ]; then
-          echo "✅ Quality Gates: EXITOSO"
+          echo "Quality Gates: EXITOSO"
         else
-          echo "❌ Quality Gates: FALLIDO"
+          echo "Quality Gates: FALLIDO"
         fi
         
         if [ "${{ needs.build.result }}" == "success" ]; then
-          echo "✅ Build: EXITOSO"
+          echo "Build: EXITOSO"
         else
-          echo "❌ Build: FALLIDO"
+          echo "Build: FALLIDO"
         fi
         
         if [ "${{ needs.security.result }}" == "success" ]; then
-          echo "✅ Security: EXITOSO"
+          echo "Security: EXITOSO"
         else
-          echo "❌ Security: FALLIDO"
+          echo "Security: FALLIDO"
         fi
         
         echo "================================"
@@ -225,6 +225,6 @@ jobs:
         echo "👥 Equipo: Ezequiel, Matías, Facu, Cocha, Nico, Pachi"
         echo "📅 Fecha: $(date)"
         echo "🔧 Node.js: ${{ env.NODE_VERSION }}"
-        echo "🧪 Pruebas ejecutadas: 18 (3 por integrante)"
+        echo "🧪 Pruebas ejecutadas: 28"
         echo "📊 Cobertura objetivo: >80%"
         echo "==========================================="
