@@ -116,3 +116,101 @@ describe('API Tests - Pruebas de Pachi', () => {
     expect(errorResponse.body).toHaveProperty('message');
   });
 });
+
+test('Debe manejar error en getAllTasks y devolver 500', () => {
+  // Simulamos que el servicio lanza un error
+  const mockError = new Error('Fallo interno');
+  const taskService = {
+    getAllTasks: jest.fn().mockImplementation(() => {
+      throw mockError;
+    })
+  };
+
+  // Reemplazamos el servicio en el controlador
+  const controller = new TaskController();
+  controller.taskService = taskService;
+
+  // Simulamos req y res
+  const req = {};
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn()
+  };
+
+  // Ejecutamos el controlador
+  controller.getAllTasks(req, res);
+
+  // Verificamos que se manejó el error correctamente
+  expect(res.status).toHaveBeenCalledWith(500);
+  expect(res.json).toHaveBeenCalledWith({
+    success: false,
+    message: 'Fallo interno'
+  });
+});
+
+test('Debe manejar error en updateTask y devolver 400', () => {
+  const controller = new TaskController();
+
+  // Simulamos req y res
+  const req = {};
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn()
+  };
+
+  // Ejecutamos el controlador
+  controller.updateTask(req, res);
+
+  // Verificamos que se manejó el error correctamente
+  expect(res.status).toHaveBeenCalledWith(400);
+  expect(res.json).toHaveBeenCalledWith({
+    success: false,
+    message: 'Task ID is required for update'
+  });
+});
+
+test('Debe manejar error en updateTask y devolver 404', () => {
+  const controller = new TaskController();
+
+  // Simulamos req y res
+  const req = {
+    params: { id: 'non-existent-id' }
+  };
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn()
+  };
+
+  // Ejecutamos el controlador
+  controller.updateTask(req, res);
+
+  // Verificamos que se manejó el error correctamente
+  expect(res.status).toHaveBeenCalledWith(404);
+  expect(res.json).toHaveBeenCalledWith({
+    success: false,
+    message: 'Task not found'
+  });
+});
+
+test('Debe manejar error en deleteTask y devolver 404', () => {
+  const controller = new TaskController();
+
+  // Simulamos req y res
+  const req = {
+    params: { id: 'non-existent-id' }
+  };
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn()
+  };
+
+  // Ejecutamos el controlador
+  controller.deleteTask(req, res);
+
+  // Verificamos que se manejó el error correctamente
+  expect(res.status).toHaveBeenCalledWith(404);
+  expect(res.json).toHaveBeenCalledWith({
+    success: false,
+    message: 'Task not found'
+  });
+});

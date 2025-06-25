@@ -54,6 +54,9 @@ class TaskController {
 
   updateTask(req, res) {
     try {
+      if (!req.params) {
+        throw new Error('Task ID is required for update');
+      }
       const task = this.taskService.updateTask(req.params.id, req.body);
       res.status(200).json({
         success: true,
