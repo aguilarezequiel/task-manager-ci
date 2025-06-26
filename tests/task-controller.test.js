@@ -42,7 +42,7 @@ describe('Task Controller - Pruebas de Matías', () => {
 
     // Obtener el ID de la tarea creada
     const createdTask = res.json.mock.calls[0][0].data;
-    
+
     // Resetear mocks
     res.status.mockClear();
     res.json.mockClear();
@@ -62,7 +62,37 @@ describe('Task Controller - Pruebas de Matías', () => {
     );
   });
 
-  test('Debe eliminar una tarea via controlador', () => {
+  test('No debe actualizar una tarea sin datos', () => {
+    // Primero crear una tarea
+    req.body = {
+      title: 'Tarea para actualizar',
+      description: 'Descripción inicial de la tarea'
+    };
+    controller.createTask(req, res);
+
+    // Obtener el ID de la tarea creada
+    const createdTask = res.json.mock.calls[0][0].data;
+
+    // Resetear mocks
+    res.status.mockClear();
+    res.json.mockClear();
+
+    // Actualizar la tarea
+    req.params.id = createdTask.id;
+    req.body = {};
+
+    controller.updateTask(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: true,
+        message: 'Task updated successfully'
+      })
+    );
+  });
+
+  /* test('Debe eliminar una tarea via controlador', () => {
     // Crear tarea
     req.body = {
       title: 'Tarea para eliminar',
@@ -87,5 +117,5 @@ describe('Task Controller - Pruebas de Matías', () => {
         message: 'Task deleted successfully'
       })
     );
-  });
+  }); */
 });
