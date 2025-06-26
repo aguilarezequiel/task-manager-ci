@@ -27,37 +27,11 @@ jobs:
     - name: 📦 Instalar dependencias
       run: npm ci
     
-    - name: 🔍 Verificar sintaxis y lint
-      run: |
-        echo "Verificando sintaxis de JavaScript..."
-        npx eslint . --ext .js --fix-dry-run || echo "ESLint no configurado, continuando..."
-    
-    - name: 🧪 Ejecutar pruebas unitarias
-      run: npm test
-    
-    - name: 📊 Generar reporte de cobertura
-      run: npm run test:coverage
-    
     - name: 📈 Verificar umbral de cobertura
       run: |
         echo "Verificando que la cobertura sea >= 80%..."
         npm run test:coverage -- --passWithNoTests
     
-    - name: ⬆️ Subir cobertura a Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage/lcov.info
-        flags: unittests
-        name: task-manager-coverage
-        fail_ci_if_error: false
-      if: env.NODE_VERSION  == '20.x'
-    
-    - name: 📋 Mostrar resumen de pruebas
-      run: |
-        echo "=== RESUMEN DE PRUEBAS ==="
-        echo "✅ Todas las pruebas ejecutadas"
-        echo "📊 Cobertura generada"
-        echo "🎯 Umbral de calidad verificado"
 
   audit:
     name: 🎯 Audit
